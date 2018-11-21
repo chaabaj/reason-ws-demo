@@ -1,0 +1,25 @@
+.message-input {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 5px;
+  border-top: 1px solid #DDDDDD;
+}
+
+.message-input button {
+  flex-grow: 1;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.message-input input[type="text"] {
+  flex-grow: 5;
+  border: 2px solid #DDDDDD;
+  height: 24px;
+  border-radius: 5px;
+
+}
+
+.message-input input:placeholder-shown {
+  font-style: italic;
+  padding-left: 5px;
+}

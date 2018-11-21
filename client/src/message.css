@@ -1,0 +1,20 @@
+
+.message {
+  border-bottom: 1px solid #DDDDDD;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.message > .username {
+  margin-left: 10px;
+  font-style: italic;
+  color: #666666
+}
+
+.message > p {
+  margin-left: 5px;
+}

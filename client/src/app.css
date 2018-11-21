@@ -1,0 +1,65 @@
+body {
+  margin: 0
+}
+
+.App {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  height: 100vh;
+}
+
+.channel-list-container {
+  background-color: #2c3a49;
+  color: white;;
+  width: 20%;
+  text-align: center;
+  flex: 1;
+}
+
+.message-list-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  flex: 4;
+}
+
+.message-list {
+  flex-grow: 1;
+}
+
+input[type="text"] {
+  border: 2px solid #DDDDDD;
+  height: 16px;
+  border-radius: 2px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+input[type="text"]:placeholder-shown {
+  font-style: italic;
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+}
+
+input[type="submit"] {
+  background-color: #2c3a49;
+  border: 1px solid #999999;
+  color: white;
+  border-radius: 3px;
+  padding: 10px;
+  transition-property: background-color;
+  transition-duration: 300ms;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: white;
+  color: #2c3a49;
+}
+
+.connect-form > input[type="text"] {
+  margin-bottom: 5px;
+}

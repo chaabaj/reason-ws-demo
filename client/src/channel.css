@@ -1,0 +1,18 @@
+.channel {
+  font-style: italic;
+  cursor: pointer;
+  transition-property: color font-size;
+  transition-duration: 300ms;
+  color: #DDDDDD
+}
+
+.channel:hover {
+  color: white;
+}
+.channel.selected {
+  color: white;
+  font-weight: bold;
+  background-color: #1c2a39;
+  border-radius: 2px;
+  padding: 12px;
+}

@@ -1,0 +1,14 @@
+
+.message-list-header {
+  border-bottom: 1px solid #dddddd;
+  color: black;
+  margin-bottom: 20px;
+}
+
+.message-list-header > h4 {
+  margin-left: 5px;
+}
+
+.message-list {
+  overflow-y: auto;
+}
