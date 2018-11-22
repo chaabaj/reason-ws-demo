@@ -14,6 +14,7 @@ The server is written in Scala using Akka Http and Cats
 - [ ] Write tests
 - [ ] Add/Delete channel
 - [ ] User icon
+- [ ] Better error handling on frontend
 
 # Installation
 
