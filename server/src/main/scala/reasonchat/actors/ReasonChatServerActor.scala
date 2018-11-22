@@ -7,6 +7,8 @@ import reasonchat.messages.ChatMessage
 import reasonchat.models.{Channel, Client, Id, User}
 import reasonchat.websocket.Reply
 
+import scala.collection.immutable.HashMap
+
 sealed trait ChatActionMessage
 case class NewClient(userId: Id[User], sourceQueue: SourceQueue[ChatMessage]) extends ChatActionMessage
 case class SetChannel(userId: Id[User], channelId: Id[Channel]) extends ChatActionMessage
@@ -17,47 +19,40 @@ case class Unicast(msg: ChatMessage) extends ChatActionMessage
 
 class ReasonChatServerActor extends Actor with ActorLogging {
 
-  private var clients: IndexedSeq[Client] = Vector.empty[Client]
+  private var clients: HashMap[Id[User], Client] = HashMap.empty[Id[User], Client]
 
-  private def updateClient(userId: Id[User], f: Client => Client): IndexedSeq[Client] = {
-    val idx = clients.indexWhere(_.id == userId)
-    if (idx >= 0)
-      clients = clients.updated(idx, f(clients(idx)))
-    clients
-  }
-
-  private def getClient(userId: Id[User]): Option[Client] = {
-    val idx = clients.indexWhere(_.id == userId)
-    if (idx >= 0)
-      Some(clients(idx))
-    else
-      None
+  private def updateClient(userId: Id[User], f: Client => Client): HashMap[Id[User], Client] = {
+    clients.get(userId)
+      .map(f)
+      .map(clients.updated(userId, _))
+      .getOrElse(clients)
   }
 
   override def receive: Receive = {
     case NewClient(userId, sourceQueue) =>
       log.debug(s"Adding new client ${userId.value}")
-      clients = clients :+ Client(userId, None, sourceQueue)
+      clients = clients + (userId -> Client(userId, None, sourceQueue))
     case SetChannel(userId, channelId) =>
       log.debug(s"Select a channel ${channelId.value}")
-      updateClient(userId, _.copy(channel = Some(channelId)))
+      clients = updateClient(userId, _.copy(channel = Some(channelId)))
     case Disconnect(userId) =>
       log.debug(s"Disconnect ${userId.value}")
     case RemoveChannel(channelId) =>
       log.debug(s"Remove channel ${channelId.value}")
-      clients = clients.filter { client =>
-        !client.channel.contains(channelId)
+      clients = clients.filter {
+        case (userId, client) =>
+          !client.channel.contains(channelId)
       }
     case BroadcastIn(channelId, msg: ChatMessage) =>
       log.debug(s"broadcast msg $msg in ${channelId.value}")
-      clients.foreach { client =>
-        client.channel
-          .filter(_ == channelId)
-          .foreach(_ => client.queue.offer(msg))
+      clients.foreach {
+        case (userId, client) if client.channel.contains(channelId) =>
+          client.queue.offer(msg)
+        case _ => ()
       }
     case Unicast(msg) =>
       log.debug(s"unicast msg $msg in ${msg.userId}")
-      getClient(msg.userId).foreach(_.queue.offer(msg))
+      clients.get(msg.userId).foreach(_.queue.offer(msg))
   }
 }
 
