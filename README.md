@@ -10,10 +10,10 @@ The server is written in Scala using Akka Http and Cats
 
 # Todo
 
-[] Check message that really comes from the user
-[] Write tests
-[] Add/Delete channel
-[] User icon
+- [ ] Check message that really comes from the user
+- [ ] Write tests
+- [ ] Add/Delete channel
+- [ ] User icon
 
 # Installation
 
